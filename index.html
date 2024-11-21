@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PAWS Mini App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      color: #4CAF50;
+    }
+    button {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Welcome to PAWS Mini App 🐾</h1>
+  <p>Track your activity and earn rewards!</p>
+  <button onclick="sendData()">Get Started</button>
+
+  <script>
+    // Telegram Web App API
+    const tg = window.Telegram.WebApp;
+    tg.expand(); // Разворачивает приложение на весь экран
+
+    function sendData() {
+      // Отправляем данные обратно боту
+      tg.sendData(JSON.stringify({ action: "get_started" }));
+    }
+  </script>
+</body>
+</html>
