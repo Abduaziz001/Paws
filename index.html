@@ -35,22 +35,38 @@
   <button onclick="sendData()">Начать</button>
 
   <script>
-    // API Telegram Web App
+    // Telegram Web App API
     const tg = window.Telegram.WebApp;
     tg.expand(); // Разворачиваем приложение на весь экран
 
-    function sendData() {
-      // Получаем текущее время взаимодействия пользователя
-      const currentTime = new Date().toISOString();
+    let interactionStartTime = null;
 
-      // Отправляем эти данные обратно в бот
+    function sendData() {
+      // Если это первое взаимодействие, записываем время начала
+      if (!interactionStartTime) {
+        interactionStartTime = new Date().toISOString();
+      }
+
+      // Отправляем данные обратно боту (включая временную метку)
       tg.sendData(JSON.stringify({
         action: "get_started",  // Действие пользователя
-        interactionTimestamp: currentTime  // Время первого взаимодействия
+        interactionTimestamp: interactionStartTime  // Время первого взаимодействия
       }));
 
-      // Пример получения количества PAWS (это будет зависеть от бота)
-      alert('Бот вычислит, сколько PAWS вы заработали. Проверьте ваш чат с ботом!');
+      // Пример вычисления PAWS на стороне клиента
+      const currentTime = new Date();
+      const firstInteractionTime = new Date(interactionStartTime);
+      const timeDifference = currentTime - firstInteractionTime;
+
+      // Рассчитываем, сколько PAWS токенов будет начислено
+      let paws = 0;
+      if (timeDifference >= 365 * 24 * 60 * 60 * 1000) {
+        paws = 1000;  // После года — 1000 PAWS
+        alert(`Поздравляем! Вы заработали 1000 PAWS токенов! 🐾`);
+      } else {
+        const remainingDays = Math.ceil((365 * 24 * 60 * 60 * 1000 - timeDifference) / (24 * 60 * 60 * 1000));
+        alert(`Вы заработаете 1000 PAWS через ${remainingDays} дней.`);
+      }
     }
   </script>
   
