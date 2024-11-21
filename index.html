@@ -1,74 +1,28 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAWS Мини-Приложение</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      text-align: center;
-      padding: 20px;
-      background-color: #333; /* светло-черный фон */
-      color: white; /* белый цвет текста */
-    }
-    h1 {
-      color: #4CAF50;
-    }
-    button {
-      background-color: #4CAF50;
-      color: white;
-      padding: 10px 20px;
-      font-size: 16px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #45a049;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PAWS Mini App</title>
+    <script>
+        // Отправка данных пользователю при нажатии кнопки "Начать"
+        function startActivity(userId) {
+            fetch(`http://localhost:5000/start_activity`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ user_id: userId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(`Вы заработали ${data.paws_tokens} токенов PAWS!`);
+            })
+            .catch(error => console.error('Error:', error));
+        }
+    </script>
 </head>
 <body>
-  <h1>Добро пожаловать в PAWS Мини-Приложение 🐾</h1>
-  <p>Отслеживайте свою активность и зарабатывайте награды!</p>
-  <button onclick="sendData()">Начать</button>
-
-  <script>
-    // Telegram Web App API
-    const tg = window.Telegram.WebApp;
-    tg.expand(); // Разворачиваем приложение на весь экран
-
-    let interactionStartTime = null;
-
-    function sendData() {
-      // Если это первое взаимодействие, записываем время начала
-      if (!interactionStartTime) {
-        interactionStartTime = new Date().toISOString();
-      }
-
-      // Отправляем данные обратно боту (включая временную метку)
-      tg.sendData(JSON.stringify({
-        action: "get_started",  // Действие пользователя
-        interactionTimestamp: interactionStartTime  // Время первого взаимодействия
-      }));
-
-      // Пример вычисления PAWS на стороне клиента
-      const currentTime = new Date();
-      const firstInteractionTime = new Date(interactionStartTime);
-      const timeDifference = currentTime - firstInteractionTime;
-
-      // Рассчитываем, сколько PAWS токенов будет начислено
-      let paws = 0;
-      if (timeDifference >= 365 * 24 * 60 * 60 * 1000) {
-        paws = 1000;  // После года — 1000 PAWS
-        alert(`Поздравляем! Вы заработали 1000 PAWS токенов! 🐾`);
-      } else {
-        const remainingDays = Math.ceil((365 * 24 * 60 * 60 * 1000 - timeDifference) / (24 * 60 * 60 * 1000));
-        alert(`Вы заработаете 1000 PAWS через ${remainingDays} дней.`);
-      }
-    }
-  </script>
-  
+    <h1>Добро пожаловать в PAWS Мини-Приложение 🐾</h1>
+    <p>Отслеживайте свою активность и зарабатывайте награды!</p>
+    <button onclick="startActivity(12345)">Начать</button> <!-- ID пользователя можно передать через query-параметр -->
 </body>
 </html>
