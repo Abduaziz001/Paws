@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PAWS Mini App</title>
+  <title>PAWS Мини-Приложение</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -28,18 +28,24 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to PAWS Mini App 🐾</h1>
-  <p>Track your activity and earn rewards!</p>
-  <button onclick="sendData()">Get Started</button>
+  <h1>Добро пожаловать в PAWS Мини-Приложение 🐾</h1>
+  <p>Отслеживайте свою активность и зарабатывайте награды!</p>
+  <button onclick="sendData()">Начать</button>
 
   <script>
-    // Telegram Web App API
+    // API Telegram Web App
     const tg = window.Telegram.WebApp;
-    tg.expand(); // Разворачивает приложение на весь экран
+    tg.expand(); // Разворачиваем приложение на весь экран
 
     function sendData() {
-      // Отправляем данные обратно боту
-      tg.sendData(JSON.stringify({ action: "get_started" }));
+      // Получаем текущее время взаимодействия пользователя
+      const currentTime = new Date().toISOString();
+
+      // Отправляем эти данные обратно в бот
+      tg.sendData(JSON.stringify({
+        action: "get_started",  // Действие пользователя
+        interactionTimestamp: currentTime  // Время первого взаимодействия
+      }));
     }
   </script>
   
